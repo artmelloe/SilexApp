@@ -1,0 +1,55 @@
+{% extends "layout.html.twig" %}
+
+{% set titulo_pagina = 'Editar cidade' %}
+
+{% block content %}
+    <div class="col-lg-12">
+        <div class="p-5">
+            <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">Editar cidade</h1>
+            </div>
+            {% for alert in app.session.flashbag.all %}
+                {% for flash in alert %}
+                    <div class="alert alert-{{ label }} alert-danger alert-dismissible fade show" role="alert">
+                        {{ flash }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            <form action="{{ path('index') ~ 'cidade/editar/salvar/' ~ cidade[0].id }}" method="post" class="user">
+                <input type="hidden" id="_method" name="_method" value="PUT" />
+                <div class="form-group">
+                    <input type="text" class="form-control form-control-user" name="nome" placeholder="Nome" value="{{ cidade[0].nome }}">
+                </div>
+                <div class="form-group">
+                    <select class="form-control form-control-user form-control-select" name="estado_id">
+                        <option value="" selected>- Selecione o Estado -</option>
+                        {% for estado in estados %}
+                            {% if estado.id == cidade[0].estado_id %}
+                                <option value="{{ estado.id }}" selected>{{ estado.nome }}</option>
+                            {% else %}
+                                <option value="{{ estado.id }}">{{ estado.nome }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-user btn-block">
+                    Editar
+                </button>
+            </form>
+            <hr>
+            <form action="{{ path('index') ~ 'cidade/deletar/' ~ cidade[0].id }}" method="post" class="user">
+                <input type="hidden" id="_method" name="_method" value="DELETE" />
+                <button type="submit" class="btn btn-danger btn-user btn-block">
+                    Deletar
+                </button>
+                <hr>
+                <button type="button" onclick="history.back()" class="btn btn-secondary btn-user btn-block">
+                    Voltar
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
